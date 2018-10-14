@@ -6,7 +6,7 @@ s.connect((socket.gethostname(), 50001))
 
 text_file = 'input_file.txt'
 f= open("input_file.txt","w+")
-for i in range(10000):
+for i in range(100000):
     f.write("This is line %d\r\n"%(i+1))
 
 if os.path.isfile(text_file) and os.stat(text_file).st_size != 0:
