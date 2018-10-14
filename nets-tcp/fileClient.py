@@ -4,7 +4,10 @@ import os
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((socket.gethostname(), 50001))
 
-text_file = 'inputFile.txt'
+text_file = 'input_file.txt'
+f= open("input_file.txt","w+")
+for i in range(10000):
+    f.write("This is line %d\r\n"%(i+1))
 
 if os.path.isfile(text_file) and os.stat(text_file).st_size != 0:
     # Send file
@@ -18,7 +21,7 @@ if os.path.isfile(text_file) and os.stat(text_file).st_size != 0:
             s.send(data)
             print('Sent data', data.decode('utf-8'))
             if not data:
-                print("File is empty now!")
+                print("No data to read")
                 done = False
                 print('Breaking from sending data')
                 break

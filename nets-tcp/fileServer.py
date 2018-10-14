@@ -12,8 +12,7 @@ s.listen(10)  # multiple clients
 def handle_client(s, addr, i, c):
     while True:
         # No duplicates of same files
-        text_file = str(i) + 'saveFile.txt'
-
+        text_file = str(i) + '_client_output.txt'
         # Receive, output and save file
         with open(text_file, "wb") as fw:
             print("Receiving..")
@@ -28,7 +27,6 @@ def handle_client(s, addr, i, c):
                 else:
                     decoded_data = data.decode("utf-8")
                     if not decoded_data:
-                        print_lock.release()
                         print("\nconnection with client " + str(i) + " broken\n")
                         print("  CLIENT " + str(i) + " -> " + decoded_data)
                         break
@@ -37,7 +35,6 @@ def handle_client(s, addr, i, c):
                         print('Received: ', decoded_data)
                         fw.write(data)
                         print('Wrote to file', decoded_data)
-                    
             fw.close()
             print("Received..")
             decoded_data = data.decode("utf-8")
@@ -71,9 +68,9 @@ def server():
         print_lock.acquire() 
         print("\nconnection successful with client " +
                 str(i) + str(addr) + "\n")
-        start_new_thread(handle_client(c, addr, i, c))
+        start_new_thread(handle_client, (c, addr, i, c))
         i += 1
-
+        print_lock.release()
 
 server()
 s.close()
